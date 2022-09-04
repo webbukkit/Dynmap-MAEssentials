@@ -70,7 +70,7 @@ public class DynmapMAEssentials
 			BUILDER.comment("Module options");
 			warpsSetName = BUILDER.comment("Name for marker set for warps").define("warpSetName", "Warps");
 			warpsIcon = BUILDER.comment("ID of marker icon to use for warps").define("warpIcon", DEFICON);
-			warpRefreshTime = BUILDER.comment("Refresh period for warps, in minutes").defineInRange("warpRefreshTime", 5.0, 0.5, 60.0);
+			warpRefreshTime = BUILDER.comment("Refresh period for warps, in minutes").defineInRange("warpRefreshTime", 5.0, 0.1, 60.0);
 			warpLayerPriority = BUILDER.comment("Dynmap layer priority for warp markers").defineInRange("warpLayerPriority", 10, -100, 100);
 			warpLayerHiddenByDefault = BUILDER.comment("Dynmap layer for warps hidden by default").define("warpLayerHidden", false);
 			warpMinZoom = BUILDER.comment("Minimum zoom level for warp marker visibility").defineInRange("warpMinZoom", 0, 0, 100);
@@ -188,6 +188,7 @@ public class DynmapMAEssentials
     		for (Level level : server.getAllLevels()) {
     			IWorld w = CapabilityUtil.getWorld(level);
     			if (w == null) continue;
+    			String worldid = level.dimension().location().toString();
     			String worldname = getWorldName(level.dimension());
     			HashMapLocation warps = w.getWarps();
     			if (warps == null) continue;
@@ -196,7 +197,7 @@ public class DynmapMAEssentials
         		HashSet<String> newwarps = new HashSet<String>(warpmap.keySet());
         		// Go through new or existing - add/update as needed
         		for (String warpID : newwarps) {
-        			String markerID = worldname + "_" + warpID;
+        			String markerID = worldid + ":" + warpID;
         			Location pos = warpmap.get(warpID);
         			Marker m = warpsSet.findMarker(markerID);	// Get existing, if any
         			if (m == null) {	// If needed, create new
@@ -207,17 +208,17 @@ public class DynmapMAEssentials
         			}
         		}
         		// And check for ones to remove
-        		HashSet<String> warpMarkerForWorld = warpMarkers.get(worldname);
+        		HashSet<String> warpMarkerForWorld = warpMarkers.get(worldid);
         		if (warpMarkerForWorld != null) {
 	        		for (String warpID: warpMarkerForWorld) {
 	        			if (!newwarps.contains(warpID)) {	// If not in new set
-	            			String markerID = worldname + "_" + warpID;
+	            			String markerID = worldid + ":" + warpID;
 	        				Marker m = warpsSet.findMarker(markerID);
 	        				if (m != null) m.deleteMarker();
 	        			}
 	        		}
         		}
-        		warpMarkers.put(worldname, newwarps);	// And remember where we are now
+        		warpMarkers.put(worldid, newwarps);	// And remember where we are now
     		}
 
     	}
