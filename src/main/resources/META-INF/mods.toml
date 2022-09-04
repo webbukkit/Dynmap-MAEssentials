@@ -1,0 +1,37 @@
+modLoader="javafml"
+loaderVersion="[40,)"
+license="Apache Public License v2"
+[[mods]]
+modId="dynmap_maessentials"
+version="${file.jarVersion}"
+displayName="Dynmap-MAEssentials"
+#logoFile="examplemod.png"
+credits=""
+authors="mikeprimm"
+description='''
+Dynmap extension for showing warp from the MA-Essentials
+'''
+[[dependencies.dynmap_maessentials]] 
+    modId="forge"
+    mandatory=true
+    versionRange="[40,)"
+    ordering="NONE"
+    side="SERVER"
+[[dependencies.dynmap_maessentials]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18.2,1.19)"
+    ordering="NONE"
+    side="SERVER"
+[[dependencies.dynmap_maessentials]] 
+    modId="dynmap"
+    mandatory=true
+    versionRange="[3.4,)"
+    ordering="NONE"
+    side="SERVER"
+[[dependencies.dynmap_maessentials]] 
+    modId="maessentials"
+    mandatory=true
+    versionRange="[1.18-3.7.1,)"
+    ordering="NONE"
+    side="SERVER"
