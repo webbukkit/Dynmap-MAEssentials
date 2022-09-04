@@ -201,10 +201,12 @@ public class DynmapMAEssentials
         			Location pos = warpmap.get(warpID);
         			Marker m = warpsSet.findMarker(markerID);	// Get existing, if any
         			if (m == null) {	// If needed, create new
+        				LOGGER.info("add " + markerID);
         				m = warpsSet.createMarker(markerID, warpID, worldname, pos.getX(), pos.getY(), pos.getZ(), warpsIcon, false);
         			}
         			else {
-        				m.setLocation(markerID, pos.getX(), pos.getY(), pos.getZ());
+        				LOGGER.info("update " + markerID);
+        				m.setLocation(worldname, pos.getX(), pos.getY(), pos.getZ());
         			}
         		}
         		// And check for ones to remove
@@ -214,7 +216,10 @@ public class DynmapMAEssentials
 	        			if (!newwarps.contains(warpID)) {	// If not in new set
 	            			String markerID = worldid + ":" + warpID;
 	        				Marker m = warpsSet.findMarker(markerID);
-	        				if (m != null) m.deleteMarker();
+	        				if (m != null) {
+	            				LOGGER.info("remove " + markerID);
+	        					m.deleteMarker();
+	        				}
 	        			}
 	        		}
         		}
